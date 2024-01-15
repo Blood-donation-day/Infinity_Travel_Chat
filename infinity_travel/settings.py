@@ -10,8 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = env("SECRET_KEY")
-
+REDIS = env("REDIS")
 DEBUG = env("DEBUG") == "True"
+DATABASE = env("DATABASE")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -30,9 +31,6 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     "accounts",
-    "companion",
-    "place",
-    "schedule",
     "chat",
 ]
 
@@ -69,7 +67,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "infinity_travel.wsgi.application"
 ASGI_APPLICATION = "infinity_travel.asgi.application"
 
-REDIS = env("REDIS")
 
 if REDIS:
     CHANNEL_LAYERS = {
@@ -91,23 +88,24 @@ if REDIS:
 else:
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": "5432",
+if DATABASE:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": "5432",
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
