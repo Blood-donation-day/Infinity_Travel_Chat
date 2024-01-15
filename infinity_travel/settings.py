@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = env("SECRET_KEY")
-REDIS = env("REDIS")
+REDIS = env("REDIS") == "True"
 DEBUG = env("DEBUG") == "True"
-DATABASE = env("DATABASE")
+DATABASE = env("DATABASE") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -77,7 +77,7 @@ if REDIS:
                     {
                         "host": env("REDIS_CLOUD_HOST"),
                         "port": env("REDIS_CLOUD_PORT"),
-                        # password: ###
+                        "password": env("REDIS_CLOUD_PASSWORD")
                         # "host": env('REDIS_CLOUD_HOST'),
                         # "port": env('REDIS_CLOUD_PORT') or 6379,
                     }
