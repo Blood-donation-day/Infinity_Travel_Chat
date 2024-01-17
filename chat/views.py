@@ -22,7 +22,7 @@ class RoomListAPIView(generics.ListAPIView):
         ).values_list("room", flat=True)
 
         queryset = Rooms.objects.filter(id__in=room_ids)
-        print(queryset.query)
+
         return queryset
 
 
