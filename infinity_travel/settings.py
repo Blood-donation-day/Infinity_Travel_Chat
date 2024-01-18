@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_spectacular",
     "corsheaders",
+    "django_extensions",
     "chat",
 ]
 
@@ -87,39 +88,30 @@ if REDIS:
 else:
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
-if DATABASE:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": "5432",
-        }
-    }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": "5432",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    "mongo": {
+        "ENGINE": "djongo",
+        "ENFORCE_SCHEMA": True,
+        "NAME": env("MONGO_DB_NAME"),
+        "CLIENT": {
+            "host": env("MONGO_DB_HOST"),
+            "port": int(env("MONGO_DB_PORT")),
+            "username": env("MONGO_DB_USERNAME"),
+            "password": env("MONGO_DB_PASSWORD"),
+        },
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
+}
+
+DATABASE_ROUTERS = ["infinity_travel.dbrouter.MultiDBRouter"]
 
 LANGUAGE_CODE = "ko-kr"
 
