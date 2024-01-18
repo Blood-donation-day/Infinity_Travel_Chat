@@ -11,6 +11,15 @@ from rest_framework.pagination import PageNumberPagination
 
 from core.permissions import get_user_id
 
+from .mongo import test
+
+
+class mongoview(APIView):
+    def get(self, request):
+        test()
+        print("테스트뷰")
+        return Response("ㅎㅇ")
+
 
 class RoomListAPIView(generics.ListAPIView):
     serializer_class = RoomSerializer

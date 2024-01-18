@@ -11,21 +11,11 @@ class Rooms(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        app_label = "mongo"
-        db_table = "rooms"
-        managed = False
-
 
 class Room_members(models.Model):
     user = models.IntegerField(unique=True)
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name="visibility")
     is_visibled = models.BooleanField(default=True)
-
-    class Meta:
-        app_label = "mongo"
-        db_table = "room_members"
-        managed = False
 
 
 class Messages(models.Model):
@@ -36,8 +26,3 @@ class Messages(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user.nickname}: {self.message}"
-
-    class Meta:
-        app_label = "mongo"
-        db_table = "messages"
-        managed = False

@@ -98,10 +98,19 @@ DATABASES = {
         "HOST": env("DB_HOST"),
         "PORT": "5432",
     },
-    "mongo": {
+    "chat": {
         "ENGINE": "djongo",
-        "ENFORCE_SCHEMA": True,
+        "ENFORCE_SCHEMA": False,
         "NAME": env("MONGO_DB_NAME"),
+        "LOGGING": {
+            "version": 1,
+            "loggers": {
+                "djongo": {
+                    "level": "DEBUG",
+                    "propogate": False,
+                }
+            },
+        },
         "CLIENT": {
             "host": env("MONGO_DB_HOST"),
             "port": int(env("MONGO_DB_PORT")),
