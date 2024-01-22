@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     "django_extensions",
+    "accounts",
     "chat",
 ]
 
@@ -90,15 +91,16 @@ else:
 
 
 DATABASES = {
-    "default": {
+    "default": {},
+    "user_db": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env("DB_NAME"),
         "USER": env("DB_USER"),
         "PASSWORD": env("DB_PASSWORD"),
         "HOST": env("DB_HOST"),
-        "PORT": "5432",
+        "PORT": env("DB_PORT"),
     },
-    "chat": {
+    "chat_db": {
         "ENGINE": "djongo",
         "ENFORCE_SCHEMA": False,
         "NAME": env("MONGO_DB_NAME"),
@@ -120,7 +122,12 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ["infinity_travel.dbrouter.MultiDBRouter"]
+DATABASE_ROUTERS = [
+    "infinity_travel.dbrouter.AuthRouter",
+    "infinity_travel.dbrouter.ChatRouter",
+]
+
+AUTH_USER_MODEL = "accounts.User"
 
 LANGUAGE_CODE = "ko-kr"
 
