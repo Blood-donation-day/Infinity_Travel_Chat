@@ -1,4 +1,4 @@
-from django.db import models
+from djongo import models
 from core.models import TimestampedModel
 from django.contrib.auth import get_user_model
 

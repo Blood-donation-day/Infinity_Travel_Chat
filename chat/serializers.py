@@ -68,8 +68,8 @@ class RoomCreateSerializer(serializers.ModelSerializer):
         room_name = self.generate_random_room_name()
         room = Rooms.objects.create(room_name=room_name)
 
-        Room_members.objects.create(user=user, room=room)
-        Room_members.objects.create(user=other_user, room=room)
+        Room_members.objects.create(user=user.pk, room=room)
+        Room_members.objects.create(user=other_user.pk, room=room)
 
         return {
             "room_name": room_name,

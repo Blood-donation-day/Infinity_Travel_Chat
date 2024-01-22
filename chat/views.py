@@ -17,7 +17,8 @@ from .mongo import test
 class mongoview(APIView):
     def get(self, request):
         test()
-        print("테스트뷰")
+        user_id = get_user_id(self.request)
+        print(user_id, "테스트뷰")
         return Response("ㅎㅇ")
 
 
