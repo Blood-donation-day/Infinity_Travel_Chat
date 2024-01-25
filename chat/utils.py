@@ -17,7 +17,7 @@ def get_user(user_id):
 @database_sync_to_async
 def save_message(room, user, message):
     try:
-        message = Messages.objects.create(user=user, room=room, message=message)
+        message = Messages.objects.create(user=user.pk, room=room, message=message)
     except Exception as e:
         print("생성실패", e)
     return {

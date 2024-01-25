@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "daphne",
     "channels",
+    "debug_toolbar",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,6 +46,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",  # 디버그 툴바
 ]
 
 ROOT_URLCONF = "infinity_travel.urls"

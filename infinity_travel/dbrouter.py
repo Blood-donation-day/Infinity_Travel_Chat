@@ -28,7 +28,7 @@ class AuthRouter(object):
 
 class ChatRouter(object):
     def __init__(self):
-        self.model_list = ["chat", "tts"]
+        self.model_list = ["chat"]
 
     def db_for_read(self, model, **hints):
         if model._meta.app_label in self.model_list:

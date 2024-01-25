@@ -18,12 +18,16 @@ class RoomSerializer(serializers.ModelSerializer):
     def get_other_user(self, room):
         request = self.context.get("request")
         user_id = get_user_id(request)
-        other_members = room.visibility.exclude(user_id=user_id)
+        member_ids = room.visibility.exclude(user=user_id).values_list(
+            "user", flat=True
+        )
+
+        other_members = User.objects.filter(id__in=list(member_ids))
         return [
             {
-                "nickname": member.user.nickname,
-                "profile_img": request.build_absolute_uri(member.user.image_url.url)
-                if member.user.image_url
+                "nickname": member.nickname,
+                "profile_img": request.build_absolute_uri(member.image_url.url)
+                if member.image_url
                 else None,
             }
             for member in other_members

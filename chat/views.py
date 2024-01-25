@@ -27,11 +27,14 @@ class RoomListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = get_user_id(self.request)
-        room_ids = Room_members.objects.filter(
-            user=user_id, is_visibled=True
-        ).values_list("room", flat=True)
+        try:
+            room_members = Room_members.objects.filter(user=user_id)
+            rooms = room_members.values_list("room", flat=True)
+            queryset = Rooms.objects.filter(id__in=rooms)
 
-        queryset = Rooms.objects.filter(id__in=room_ids)
+        except Exception as e:
+            print(f"Error: {e}")
+            queryset = Rooms.objects.none()
 
         return queryset
 
