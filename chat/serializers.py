@@ -1,9 +1,13 @@
-from rest_framework import serializers
 from .models import Rooms, Messages, Room_members
+from .cache import get_user_by_id_from_cache
+
+from rest_framework import serializers
 from core.permissions import get_user_id
 from django.contrib.auth import get_user_model
+
 import random
 import string
+
 
 User = get_user_model()
 
@@ -21,8 +25,10 @@ class RoomSerializer(serializers.ModelSerializer):
         member_ids = room.visibility.exclude(user=user_id).values_list(
             "user", flat=True
         )
+        other_members = [
+            get_user_by_id_from_cache(member_id) for member_id in member_ids
+        ]
 
-        other_members = User.objects.filter(id__in=list(member_ids))
         return [
             {
                 "nickname": member.nickname,
@@ -97,4 +103,4 @@ class MessageSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         user_id = get_user_id(request)
 
-        return obj.user.pk == user_id
+        return obj.user == user_id

@@ -133,6 +133,18 @@ DATABASE_ROUTERS = [
     "infinity_travel.dbrouter.ChatRouter",
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://default:{env("REDIS_CLOUD_PASSWORD")}@{env("REDIS_CLOUD_HOST")}:{env("REDIS_CLOUD_PORT")}/0",
+        "OPTION": {
+            'PASSWORD': env("REDIS_CLOUD_PASSWORD"),
+        },
+    }
+}
+
+
+
 AUTH_USER_MODEL = "accounts.User"
 
 LANGUAGE_CODE = "ko-kr"

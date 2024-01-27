@@ -13,14 +13,14 @@ class Rooms(models.Model):
 
 
 class Room_members(models.Model):
-    user = models.IntegerField(unique=True)
+    user = models.IntegerField()
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name="visibility")
     is_visibled = models.BooleanField(default=True)
 
 
 class Messages(models.Model):
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name="rooms")
-    user = models.IntegerField(unique=True)
+    user = models.IntegerField()
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
