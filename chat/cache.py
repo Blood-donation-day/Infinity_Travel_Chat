@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-CACHE_TTL = 600
+CACHE_TTL = 84400
 
 
 def get_user_by_id_from_cache(user_id):

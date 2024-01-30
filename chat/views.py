@@ -1,5 +1,6 @@
 from .models import Rooms, Messages, Room_members
 from .serializers import *
+from .mongo import test
 
 from django.shortcuts import get_object_or_404
 
@@ -10,8 +11,6 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 
 from core.permissions import get_user_id
-
-from .mongo import test
 
 
 class mongoview(APIView):

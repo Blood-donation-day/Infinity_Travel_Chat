@@ -14,13 +14,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = await get_user_from_cookie(self)
         room_name = self.scope["url_route"]["kwargs"]["room_name"]
         room = await get_room(room_name)
-
         if room is None:
             await self.close()
 
         self.scope["user"] = user
         self.scope["room"] = room
-
         self.room_name = f"{room_name}"
         self.room_group_name = f"chat_{self.room_name}"
         # 그룹 입장
@@ -42,13 +40,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         chat_message = await save_message(room, user, message)
 
-        #  최근메세지 저장
-        update_room_async = database_sync_to_async(
-            lambda: setattr(room, "lastest_text", message)
-        )
-        await update_room_async()
-        save_room_async = database_sync_to_async(room.save)
-        await save_room_async()
+        # #  최근메세지 저장
+        # update_room_async = database_sync_to_async(
+        #     lambda: setattr(room, "lastest_text", message)
+        # )
+        # await update_room_async()
+        # save_room_async = database_sync_to_async(room.save)
+        # await save_room_async()
 
         await self.channel_layer.group_send(
             self.room_group_name,
