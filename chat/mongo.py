@@ -1,5 +1,6 @@
-from pymongo import MongoClient
-import datetime, os
+from pymongo import MongoClient, InsertOne
+from bson import ObjectId
+import datetime, os, time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,17 +15,22 @@ chat_collection = db.chat
 
 
 def test():
-    chat = {
-        "user": "test1",
-        "room": "chatroom1",
-        "content": "MongoDB채팅 저장 테스트입니다.",
-        "read_count": "2",
-        "is_delete": "0",
-        "created_at": datetime.datetime.now(tz=datetime.timezone.utc),
-        "updated_at": datetime.datetime.now(tz=datetime.timezone.utc),
-    }
+    chats = []
+    for _ in range(10000):
+        chat = {
+            # "_id": ObjectId(),
+            "user": "test1",
+            "room": "chatroom1",
+            "content": "MongoDB채팅 저장 테스트입니다.",
+            "read_count": "2",
+            "is_delete": "0",
+            "created_at": datetime.datetime.now(tz=datetime.timezone.utc),
+        }
+        chats.append(InsertOne(chat))
 
     # inserted_id >> sqlite3처럼 자동으로 부여되는 id
 
-    chat_id = chat_collection.insert_one(chat).inserted_id
-    print(chat_id)
+    start = time.time()
+    chat_ids = chat_collection.bulk_write(chats)
+    end = time.time()
+    print(f"{end-start}.sec")

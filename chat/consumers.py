@@ -40,14 +40,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         chat_message = await save_message(room, user, message)
 
-        # #  최근메세지 저장
-        # update_room_async = database_sync_to_async(
-        #     lambda: setattr(room, "lastest_text", message)
-        # )
-        # await update_room_async()
-        # save_room_async = database_sync_to_async(room.save)
-        # await save_room_async()
-
         await self.channel_layer.group_send(
             self.room_group_name,
             {
